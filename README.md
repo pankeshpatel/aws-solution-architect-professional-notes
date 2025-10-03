@@ -1,0 +1,1 @@
+This repository contains notes & resources to prepare for AWS Solution architect professional exam.
