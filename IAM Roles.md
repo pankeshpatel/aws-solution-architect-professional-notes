@@ -85,3 +85,56 @@ Defines what actions and resources are allowed when the role is assumed. Example
 
 4. **Session Expiration**  
    Credentials expire after a set duration (default 1 hour, max 12 hours for most roles).
+
+
+#### IAM Roles vs Resource Based Policies
+
+# IAM Roles vs Resource-Based Policies
+
+## IAM Roles
+- **Definition**: An IAM Role is an AWS identity with specific permissions that can be assumed by users, applications, or services to perform actions in AWS.
+- **Attached To**: Principals (IAM users, AWS services, federated identities).
+- **Use Case**: Temporary access delegation. Instead of sharing long-term credentials, entities assume roles to get temporary credentials.
+- **Trust Policy**: IAM Roles require a *trust policy* that defines **who** (principals) can assume the role.
+- **Policy Attachment**: Roles can have **identity-based policies** (permissions) that define what actions they can perform after being assumed.
+- **Typical Scenarios**:
+  - EC2/Lambda execution roles (granting AWS service permissions).
+  - Cross-account access (Account A’s user assumes a role in Account B).
+  - Temporary elevated access with STS.
+
+---
+
+## Resource-Based Policies
+- **Definition**: A policy that is attached **directly to an AWS resource** (instead of a user/role) to specify who can access it and what actions are allowed.
+- **Attached To**: AWS resources (e.g., S3 bucket policy, KMS key policy, SNS topic policy, SQS queue policy, API Gateway resource policy).
+- **Use Case**: Allowing **cross-account** or **external entity** access to a specific resource without needing a role assumption.
+- **Trust Concept**: Resource-based policies do not require a separate trust policy. They directly define which principals (AWS accounts, IAM users, roles, services) can access the resource.
+- **Policy Attachment**: They are embedded inside the resource itself.
+- **Typical Scenarios**:
+  - S3 Bucket Policy allowing another AWS account read/write access.
+  - KMS Key Policy granting permissions to multiple accounts.
+  - SNS Topic Policy allowing a service (like CloudWatch) to publish to it.
+
+---
+
+## Key Differences
+
+| Aspect                  | IAM Roles                                           | Resource-Based Policies                           |
+|--------------------------|-----------------------------------------------------|--------------------------------------------------|
+| **Attached To**          | Principals (users, apps, services)                  | AWS resources (S3, KMS, SNS, SQS, etc.)          |
+| **Access Mechanism**     | Entities **assume the role** to get temporary creds | Directly grant access to principals               |
+| **Trust Model**          | Requires a **trust policy**                        | Trust is built into the resource policy itself    |
+| **Best For**             | Temporary cross-service / cross-account access      | Direct resource sharing across accounts/services |
+| **Example**              | EC2 instance assumes a role to access S3            | S3 bucket policy allowing Account B to access it |
+
+---
+
+## Choosing Between Them
+- Use **IAM Roles** when you want:
+  - Centralized identity management.
+  - Temporary credentials via STS.
+  - Cross-account access requiring explicit assumption.
+- Use **Resource-Based Policies** when you want:
+  - To directly attach permissions to the resource.
+  - Simpler sharing model (no role assumption).
+  - Access by multiple accounts or services without managing roles in each account.

@@ -14,15 +14,16 @@ They follow the pattern:
 
 ## 1. `<operator>` Cheat Sheet
 
-| Category   | Operators                                                                 |
-|------------|---------------------------------------------------------------------------|
-| **String** | `StringEquals`, `StringNotEquals`, `StringEqualsIgnoreCase`, `StringNotEqualsIgnoreCase`, `StringLike`, `StringNotLike` |
-| **Numeric** | `NumericEquals`, `NumericNotEquals`, `NumericLessThan`, `NumericLessThanEquals`, `NumericGreaterThan`, `NumericGreaterThanEquals` |
+| Category      | Operators                                                                 |
+|---------------|---------------------------------------------------------------------------|
+| **String**    | `StringEquals`, `StringNotEquals`, `StringEqualsIgnoreCase`, `StringNotEqualsIgnoreCase`, `StringLike`, `StringNotLike` |
+| **Numeric**   | `NumericEquals`, `NumericNotEquals`, `NumericLessThan`, `NumericLessThanEquals`, `NumericGreaterThan`, `NumericGreaterThanEquals` |
 | **Date/Time** | `DateEquals`, `DateNotEquals`, `DateLessThan`, `DateLessThanEquals`, `DateGreaterThan`, `DateGreaterThanEquals` |
-| **Boolean** | `Bool`                                                                  |
-| **IP**     | `IpAddress`, `NotIpAddress`                                               |
-| **Binary** | `BinaryEquals`                                                            |
-| **ARN**    | `ArnEquals`, `ArnNotEquals`, `ArnLike`, `ArnNotLike`                      |
+| **Boolean**   | `Bool`                                                                  |
+| **IP**        | `IpAddress`, `NotIpAddress`                                               |
+| **Binary**    | `BinaryEquals`                                                            |
+| **ARN**       | `ArnEquals`, `ArnNotEquals`, `ArnLike`, `ArnNotLike`                      |
+| **Null**      |                                                                           |
 
 
 ## 2. Global Condition Keys

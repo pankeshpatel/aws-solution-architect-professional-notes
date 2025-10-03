@@ -4,6 +4,12 @@ An **IAM Policy** in AWS is a JSON document that defines permissions.
 These permissions determine **what actions** are allowed or denied on **which resources**, and under **what conditions**. 
 Policies are central to AWS Identity and Access Management (IAM), ensuring secure and fine-grained access control across AWS services.
 
+### IAM Policy types
+
+- AWS Managed: A policy managed/pre-defined by AWS.
+- Inline Polices: A policy that you directly **embed into a single IAM user, group, or role**.
+- Customer Managed: Policies created and managed by **you (the customer)**.
+
 ## Structure of an IAM Policy
 
 ```json
@@ -21,6 +27,26 @@ Policies are central to AWS Identity and Access Management (IAM), ensuring secur
   ]
 }
 ```
+
+### example of `NotAction` (used instead of `Deny`)
+
+```json
+{
+  "version" : "2012-10-17",
+  "statement" : [
+    {
+    "Effect" : "Allow",
+    "NotAction": [
+      "iam:*",
+      "organization:*",
+      "account:*"
+    ],
+    "Resource" :"*"
+    }
+  ]
+}
+```
+
 
 
 An IAM policy follows a structured JSON format with four main parts:
@@ -102,5 +128,61 @@ An IAM policy follows a structured JSON format with four main parts:
       }
     }
   ]
+}
+```
+
+
+### Policy Evaluation
+
+- Explicit DENY has precendence over ALLOW
+
+
+### IAM Policy Variables and Tags
+
+- IAM policy variables let you make dynamic, context-aware policies instead of hardcoding values. 
+  They act like placeholders that get replaced when a request is evaluated.
+
+  Examples of Common Policy Variables~(**aws specific**)
+
+ - `aws:username` – The name of the IAM user making the request.
+ - `aws:userid` – The unique identifier of the user.
+ - `aws:PrincipalTag/Department` – A tag from the principal (e.g., the user or role).
+ - `aws:RequestTag/Project` – A tag included in the request context (for creating/tagging resources).
+ - `aws:ResourceTag/Environment` – A tag from the target resource.
+ - `aws:CurrentTime` – The time of the request (useful for time-based access).
+ - `aws:SourceIp` – The requester’s IP address.
+
+```json
+  {
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:PutObject",
+      "Resource": "arn:aws:s3:::mybucket/home/${aws:username}/*"
+    }
+  ]
+}
+```
+
+
+(2) ***Service-Specific** Variables
+
+Some services define their own policy variables:
+- S3: s3:prefix, s3:max-keys, s3:x-amz-acl
+- SNS: sns:Endpoint, sns:Protocol
+
+(3) ***Tag-Based** Variables
+
+IAM supports ABAC (Attribute-Based Access Control) using tags:
+
+- `iam:ResourceTag/key-name` – Tags attached to the target resource
+- `aws:PrincipalTag/key-name` – Tags attached to the IAM user or role
+
+```json
+"Condition": {
+  "StringEquals": {
+    "aws:ResourceTag/Department": "${aws:PrincipalTag/Department}"
+  }
 }
 ```
